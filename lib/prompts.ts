@@ -18,5 +18,6 @@ Cycling console fields (include only if clearly visible):
   avgRpm (number), avgSpeedKmh (number), calories (number), heartRate (number), resistanceLevel (number)
 
 Example rowing: {"consoleType":"rowing","duration":"00:22:15","distanceMeters":5000,"splitPer500m":"2:13.5","strokeRate":24,"calories":285,"watts":178}
-Example cycling: {"consoleType":"cycling","duration":"00:45:00","distanceKm":18.4,"avgWatts":165,"avgRpm":85,"avgSpeedKmh":24.5,"calories":410}`
+Example cycling: {"consoleType":"cycling","duration":"00:45:00","distanceKm":18.4,"avgWatts":165,"avgRpm":85,"avgSpeedKmh":24.5,"calories":410}
+Example unknown: {"consoleType":"unknown"}`
 }

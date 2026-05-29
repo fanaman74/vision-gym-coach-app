@@ -21,4 +21,9 @@ describe('buildVisionPrompt', () => {
     const prompt = buildVisionPrompt()
     expect(prompt).toMatch(/omit|never guess/i)
   })
+
+  it('includes an example for unknown console type', () => {
+    const prompt = buildVisionPrompt()
+    expect(prompt).toContain('"consoleType":"unknown"')
+  })
 })
