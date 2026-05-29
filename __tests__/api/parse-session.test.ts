@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 import { POST } from '@/app/api/parse-session/route'
+import { NextRequest } from 'next/server'
 import * as openrouterModule from '@/lib/openrouter'
 import { RowingSession } from '@/types/metrics'
 
@@ -33,7 +34,7 @@ describe('POST /api/parse-session', () => {
       body: JSON.stringify({ image: 'base64data', mimeType: 'image/jpeg' }),
     })
 
-    const res = await POST(req)
+    const res = await POST(req as unknown as NextRequest)
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.consoleType).toBe('rowing')
@@ -47,7 +48,7 @@ describe('POST /api/parse-session', () => {
       body: JSON.stringify({ mimeType: 'image/jpeg' }),
     })
 
-    const res = await POST(req)
+    const res = await POST(req as unknown as NextRequest)
     expect(res.status).toBe(400)
   })
 
@@ -58,7 +59,7 @@ describe('POST /api/parse-session', () => {
       body: JSON.stringify({ image: 'data' }),
     })
 
-    const res = await POST(req)
+    const res = await POST(req as unknown as NextRequest)
     expect(res.status).toBe(400)
   })
 
@@ -71,7 +72,7 @@ describe('POST /api/parse-session', () => {
       body: JSON.stringify({ image: 'data', mimeType: 'image/jpeg' }),
     })
 
-    const res = await POST(req)
+    const res = await POST(req as unknown as NextRequest)
     expect(res.status).toBe(500)
     const body = await res.json()
     expect(body.error).toBe('AI service unavailable')
