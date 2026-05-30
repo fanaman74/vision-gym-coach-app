@@ -15,7 +15,7 @@ const mockRowingSession = {
 
 beforeEach(() => {
   process.env.OPENROUTER_API_KEY = 'test-key'
-  process.env.OPENROUTER_MODEL = 'google/gemini-2.0-flash'
+  process.env.OPENROUTER_MODEL = 'deepseek/deepseek-v4-flash'
   mockFetch.mockClear()
 })
 
