@@ -8,23 +8,23 @@ export interface BaseSession {
 
 export interface RowingSession extends BaseSession {
   consoleType: 'rowing'
-  duration: string
-  distanceMeters: number
-  splitPer500m: string
-  strokeRate: number
-  calories: number
-  watts: number
+  duration?: string
+  distanceMeters?: number
+  splitPer500m?: string
+  strokeRate?: number
+  calories?: number
+  watts?: number
   heartRate?: number
 }
 
 export interface CyclingSession extends BaseSession {
   consoleType: 'cycling'
-  duration: string
-  distanceKm: number
-  avgWatts: number
-  avgRpm: number
-  avgSpeedKmh: number
-  calories: number
+  duration?: string
+  distanceKm?: number
+  avgWatts?: number
+  avgRpm?: number
+  avgSpeedKmh?: number
+  calories?: number
   heartRate?: number
   resistanceLevel?: number
 }

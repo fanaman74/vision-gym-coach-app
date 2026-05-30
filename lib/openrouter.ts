@@ -44,7 +44,10 @@ export async function parseConsoleImage(
   }
 
   const data = await response.json()
-  const content = data.choices[0].message.content
+  const content = data.choices?.[0]?.message?.content
+  if (!content) {
+    throw new Error('Unexpected response shape from OpenRouter')
+  }
   const json = JSON.parse(extractJson(content))
 
   return { ...json, capturedAt: new Date().toISOString() }

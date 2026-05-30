@@ -63,4 +63,14 @@ describe('parseConsoleImage', () => {
       'OpenRouter error: 429'
     )
   })
+
+  it('throws when OpenRouter returns an empty choices array', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ choices: [] }),
+    })
+    await expect(parseConsoleImage('data', 'image/jpeg')).rejects.toThrow(
+      'Unexpected response shape from OpenRouter'
+    )
+  })
 })
