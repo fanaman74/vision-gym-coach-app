@@ -2,6 +2,8 @@ import { getSessions, StoredSession } from '@/lib/get-sessions'
 import StatCard from '@/components/StatCard'
 import SessionListItem from '@/components/SessionListItem'
 
+export const dynamic = 'force-dynamic'
+
 function computeTotals(sessions: StoredSession[]) {
   let totalDistance = 0
   let totalCalories = 0
