@@ -3,7 +3,7 @@ import { GymSession, RowingSession, CyclingSession } from '@/types/metrics'
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-gray-800 rounded-lg p-3">
-      <p className="text-xs text-gray-400 mb-1">{label}</p>
+      <p className="text-xs text-orange-400 mb-1">{label}</p>
       <p className="text-lg font-semibold">{value}</p>
     </div>
   )

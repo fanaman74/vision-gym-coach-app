@@ -33,7 +33,7 @@ export default function CameraCapture({ onCapture, isLoading }: Props) {
       <button
         onClick={() => inputRef.current?.click()}
         disabled={isLoading}
-        className="px-8 py-4 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-xl text-lg font-semibold disabled:opacity-50 transition-colors"
+        className="px-8 py-4 bg-orange-500 hover:bg-orange-400 active:bg-orange-600 rounded-xl text-lg font-semibold disabled:opacity-50 transition-colors"
       >
         {isLoading ? 'Analysing…' : 'Capture Console'}
       </button>
