@@ -359,7 +359,7 @@ export const dynamic = 'force-dynamic'
 export default function HistoryPage() {
   const [results, setResults] = useState<SplitSession[]>([])
   const [loading, setLoading] = useState(true)
-  const [fetchError, setFetchError] = useState(false)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const [view, setView] = useState<'dashboard' | 'cards' | 'calendar' | 'charts'>('dashboard')
   const [filter, setFilter] = useState<'all' | 'rowing' | 'cycling'>('all')
   const [layout, setLayout] = useState<'grid' | 'list'>('grid')
@@ -367,7 +367,11 @@ export default function HistoryPage() {
   useEffect(() => {
     getSessions()
       .then(rows => setResults(rows.map(storedToSplit)))
-      .catch(() => setFetchError(true))
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err)
+        console.error('[history] getSessions failed:', msg)
+        setFetchError(msg)
+      })
       .finally(() => setLoading(false))
   }, [])
 
@@ -426,7 +430,12 @@ export default function HistoryPage() {
       </div>
 
       {loading && <p style={{ color: 'var(--ink-faint)', textAlign: 'center', padding: '48px 0' }}>Loading…</p>}
-      {fetchError && <p style={{ color: 'var(--primary)', textAlign: 'center', padding: '48px 0' }}>Couldn&apos;t load sessions — check your Supabase credentials.</p>}
+      {fetchError && (
+        <div style={{ textAlign: 'center', padding: '48px 24px' }}>
+          <p style={{ color: 'var(--primary)', fontWeight: 700, marginBottom: 8 }}>Couldn&apos;t load sessions</p>
+          <p style={{ color: 'var(--ink-soft)', fontSize: 13, fontFamily: 'monospace', wordBreak: 'break-all' }}>{fetchError}</p>
+        </div>
+      )}
 
       {!loading && !fetchError && (
         <>
