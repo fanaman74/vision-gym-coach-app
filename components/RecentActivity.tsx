@@ -150,7 +150,25 @@ export default function RecentActivity({ results }: Props) {
   const maxBar = Math.max(...days.map(d => d.row + d.cycle), 1)
   const total14 = days.reduce((s, d) => s + d.row + d.cycle, 0) / 1000
 
-  if (!last) return null
+  if (!last) return (
+    <section style={{ marginTop: 96 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
+        <div>
+          <span className="tag">RECENT ACTIVITY</span>
+          <h2 className="hero-head" style={{ fontSize: 'clamp(40px,6vw,72px)', marginTop: 8 }}>
+            Your last <em>14 days.</em>
+          </h2>
+        </div>
+      </div>
+      <div className="surface" style={{ marginTop: 28, padding: 'var(--pad-card)', textAlign: 'center', minHeight: 180, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+        <div style={{ width: 52, height: 52, borderRadius: 14, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', margin: '0 auto' }}>
+          <Icon name="chart" size={28} />
+        </div>
+        <div style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 22 }}>No sessions yet</div>
+        <div style={{ color: 'var(--ink-soft)', fontSize: 15, maxWidth: 340 }}>Tap the orb above to snap your first console screen — your chart fills in from there.</div>
+      </div>
+    </section>
+  )
 
   return (
     <section style={{ marginTop: 96 }}>

@@ -128,7 +128,47 @@ function buildAdvice(results: SplitSession[]): AdviceCard[] {
 
 export default function CoachSection({ results }: { results: SplitSession[] }) {
   const advice = useMemo(() => buildAdvice(results), [results])
-  if (!advice.length) return null
+
+  if (!advice.length) return (
+    <section style={{ marginTop: 96 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
+        <div>
+          <span className="tag">YOUR COACH</span>
+          <h2 className="hero-head" style={{ fontSize: 'clamp(40px,6vw,72px)', marginTop: 8 }}>
+            Based on your <em>last sessions.</em>
+          </h2>
+        </div>
+        <span className="pill">unlocks after first session</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--gap-grid)', marginTop: 28 }}>
+        {[
+          { tone: 'cyan',    icon: 'bolt',    kicker: 'GET MOVING',   title: 'Consistency is the cheat code', body: 'Your coach tracks rest days, streaks and recovery windows — and tells you exactly when to push.' },
+          { tone: 'violet',  icon: 'chart',   kicker: 'PACE TRENDS',  title: 'Is your pace improving?',       body: 'After a few sessions we'll compare your splits against your rolling average and flag real progress.' },
+          { tone: 'ink',     icon: 'sparkle', kicker: 'BALANCE',      title: 'Row vs ride ratio',             body: 'Mixing erg and bike work builds a more resilient engine. The coach will nudge you when you're overloading one side.' },
+          { tone: 'grad',    icon: 'trophy',  kicker: 'YOUR MISSION', title: 'A target built just for you',   body: 'Based on your best pace and favourite distance, we'll set a specific time goal to chase next session.' },
+        ].map((c, i) => {
+          const t = TONES[c.tone] ?? TONES.ink
+          return (
+            <div key={i} style={{
+              padding: 'var(--pad-card)', borderRadius: 'var(--radius)',
+              background: t.bg, color: t.fg, boxShadow: 'var(--shadow)',
+              display: 'flex', flexDirection: 'column', minHeight: 220, opacity: 0.55,
+              filter: 'saturate(0.6)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,.16)', color: t.fg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon name={c.icon} size={24} />
+                </div>
+                <span className="tag" style={{ color: t.faint }}>{c.kicker}</span>
+              </div>
+              <h3 style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: 700, fontSize: 'clamp(22px,2.4vw,28px)', letterSpacing: '-0.02em', lineHeight: 1.02, margin: '20px 0 10px' }}>{c.title}</h3>
+              <p style={{ fontSize: 15, lineHeight: 1.45, color: t.faint, margin: 0 }}>{c.body}</p>
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
 
   return (
     <section style={{ marginTop: 96 }}>
