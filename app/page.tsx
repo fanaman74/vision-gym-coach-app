@@ -260,18 +260,27 @@ export default function CapturePage() {
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
 
+    console.log('[upload] file:', file.name, file.type, file.size)
+
     try {
+      console.log('[upload] step 1: resizing image…')
       const { base64, mimeType } = await resizeImage(file, 1280)
+      console.log('[upload] step 2: resize ok, mimeType:', mimeType, 'base64 len:', base64.length)
+
       const res = await fetch('/api/parse-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64, mimeType }),
       })
+      console.log('[upload] step 3: API response status:', res.status)
+
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
-        throw new Error(body.error ?? 'AI service unavailable')
+        throw new Error(body.error ?? `API error ${res.status}`)
       }
       const data: GymSession = await res.json()
+      console.log('[upload] step 4: parsed session:', JSON.stringify(data).slice(0, 300))
+
       setGymSession(data)
       const detectedSport: 'rowing' | 'cycling' = data.consoleType === 'cycling' ? 'cycling' : 'rowing'
       setSport(detectedSport)
@@ -288,7 +297,9 @@ export default function CapturePage() {
       setDistanceM(dist)
       setStage('review')
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Something went wrong')
+      const msg = err instanceof Error ? err.message : String(err)
+      console.error('[upload] FAILED at step:', msg, err)
+      setErrorMsg(msg)
       setStage('error')
     }
   }, [])

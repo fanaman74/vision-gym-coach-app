@@ -4,10 +4,15 @@ export async function resizeImage(
 ): Promise<{ base64: string; mimeType: string }> {
   // First try canvas resize (handles JPEG, PNG, WebP, GIF)
   try {
-    return await resizeViaCanvas(file, maxWidth)
-  } catch {
+    const result = await resizeViaCanvas(file, maxWidth)
+    console.log('[resize] canvas path ok')
+    return result
+  } catch (canvasErr) {
+    console.warn('[resize] canvas failed, trying FileReader fallback:', canvasErr)
     // Fallback: send the raw file as-is (handles HEIC, AVIF, etc.)
-    return readRawBase64(file)
+    const result = await readRawBase64(file)
+    console.log('[resize] FileReader fallback ok, mimeType:', result.mimeType)
+    return result
   }
 }
 
