@@ -12,7 +12,7 @@ export async function parseConsoleImage(
   imageBase64: string,
   mimeType: string
 ): Promise<GymSession> {
-  const model = process.env.OPENROUTER_MODEL ?? 'google/gemini-2.5-flash-preview-05-20'
+  const model = process.env.OPENROUTER_MODEL ?? 'google/gemini-3.5-flash'
 
   const response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',

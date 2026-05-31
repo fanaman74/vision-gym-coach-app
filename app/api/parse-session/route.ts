@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
     const session = await parseConsoleImage(body.image, body.mimeType)
     return NextResponse.json(session)
   } catch (err) {
-    console.error('[parse-session]', err)
-    return NextResponse.json({ error: 'AI service unavailable' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[parse-session]', msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
