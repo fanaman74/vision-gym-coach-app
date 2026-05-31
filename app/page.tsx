@@ -334,7 +334,7 @@ export default function CapturePage() {
           </div>
 
           {/* CTA orb */}
-          <div style={{ marginTop: 56, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
+          <div style={{ marginTop: 56, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 64 }}>
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <button className="cta-orb" onClick={() => cameraInputRef.current?.click()} aria-label="Open camera">
                 <div style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
