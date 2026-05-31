@@ -70,13 +70,15 @@ export function storedToSplit(s: StoredSession): SplitSession {
     ? (data as RowingSession).watts
     : (data as CyclingSession).avgWatts
 
+  const capturedAt = (data as { capturedAt?: string }).capturedAt
+  const storedSource = (data as { source?: string }).source
   return {
     id: s.id,
     sport,
     duration,
     distance,
-    date: s.created_at,
-    source: 'upload',
+    date: capturedAt ?? s.created_at,   // prefer exact capture timestamp
+    source: storedSource === 'camera' ? 'camera' : 'upload',
     calories,
     watts,
   }

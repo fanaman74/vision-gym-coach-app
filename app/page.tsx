@@ -220,6 +220,7 @@ export default function CapturePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const dragCounter = useRef(0)
+  const captureSource = useRef<'camera' | 'upload'>('upload')
 
   /* drag-and-drop */
   useEffect(() => {
@@ -233,7 +234,7 @@ export default function CapturePage() {
     const onDrop = (e: DragEvent) => {
       dragCounter.current = 0; setDragging(false); e.preventDefault()
       const f = e.dataTransfer?.files?.[0]
-      if (f && f.type.startsWith('image/')) handleFile(f)
+      if (f && f.type.startsWith('image/')) { captureSource.current = 'upload'; handleFile(f) }
     }
     const onOver = (e: DragEvent) => e.preventDefault()
     window.addEventListener('dragenter', onEnter)
@@ -257,10 +258,12 @@ export default function CapturePage() {
   const handleFile = useCallback(async (file: File) => {
     setStage('scanning')
     setErrorMsg(null)
+    const capturedAt = new Date().toISOString()   // stamp exact capture time
+    const source = captureSource.current
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
 
-    console.log('[upload] file:', file.name, file.type, file.size)
+    console.log('[upload] file:', file.name, file.type, file.size, 'source:', source, 'at:', capturedAt)
 
     try {
       console.log('[upload] step 1: resizing image…')
@@ -278,7 +281,9 @@ export default function CapturePage() {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error ?? `API error ${res.status}`)
       }
-      const data: GymSession = await res.json()
+      const raw: GymSession = await res.json()
+      // Stamp exact capture time + source so they're persisted in session_data
+      const data = { ...raw, capturedAt, source } as unknown as GymSession
       console.log('[upload] step 4: parsed session:', JSON.stringify(data).slice(0, 300))
 
       setGymSession(data)
@@ -501,9 +506,9 @@ export default function CapturePage() {
 
       {/* ── hidden file inputs ── */}
       <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }}
-        onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = '' }} />
+        onChange={e => { captureSource.current = 'upload'; const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = '' }} />
       <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" style={{ display: 'none' }}
-        onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = '' }} />
+        onChange={e => { captureSource.current = 'camera'; const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = '' }} />
     </div>
   )
 }
