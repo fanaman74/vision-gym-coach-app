@@ -8,5 +8,6 @@ export async function saveSession(session: GymSession): Promise<void> {
   })
   if (error) {
     console.error('[saveSession]', error)
+    throw new Error(error.message)
   }
 }

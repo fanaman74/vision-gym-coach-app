@@ -309,9 +309,13 @@ export default function CapturePage() {
     setPreviewUrl(null); setGymSession(null); setStage('idle'); setErrorMsg(null)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!gymSession) return
-    saveSession(gymSession)
+    try {
+      await saveSession(gymSession)
+    } catch (err) {
+      console.error('[handleSave]', err)
+    }
     const split = gymSessionToSplit('local-' + Date.now(), gymSession, new Date().toISOString())
     setSessions(prev => [split, ...prev])
     setHistorySessions(prev => [split, ...prev])
