@@ -12,7 +12,7 @@ export async function parseConsoleImage(
   imageBase64: string,
   mimeType: string
 ): Promise<GymSession> {
-  const model = process.env.OPENROUTER_MODEL ?? 'deepseek/deepseek-v4-flash'
+  const model = process.env.OPENROUTER_MODEL ?? 'google/gemini-2.5-flash-preview-05-20'
 
   const response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',
@@ -40,7 +40,8 @@ export async function parseConsoleImage(
   })
 
   if (!response.ok) {
-    throw new Error(`OpenRouter error: ${response.status}`)
+    const errBody = await response.text().catch(() => '')
+    throw new Error(`OpenRouter ${response.status}: ${errBody.slice(0, 200)}`)
   }
 
   const data = await response.json()
