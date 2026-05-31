@@ -334,9 +334,9 @@ export default function CapturePage() {
           </div>
 
           {/* CTA orb */}
-          <div style={{ marginTop: 56, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 48 }}>
-            {/* Container sized to the full spin-label (300×300) so the gap is measured correctly */}
-            <div style={{ position: 'relative', width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ marginTop: 56, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32 }}>
+            {/* marginBottom accounts for the 50px spin-label overflow below the 200px orb */}
+            <div style={{ position: 'relative', display: 'inline-block', marginBottom: 64 }}>
               <button className="cta-orb" onClick={() => cameraInputRef.current?.click()} aria-label="Open camera">
                 <div style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
                   <Icon name="camera" size={48} />
