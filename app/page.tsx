@@ -5,7 +5,10 @@ import Icon from '@/components/Icon'
 import { GymSession } from '@/types/metrics'
 import { saveSession } from '@/lib/save-session'
 import { resizeImage } from '@/lib/resize-image'
-import { gymSessionToSplit, formatDuration, formatPace, SplitSession } from '@/lib/adapt-session'
+import { gymSessionToSplit, formatDuration, formatPace, SplitSession, storedToSplit } from '@/lib/adapt-session'
+import RecentActivity from '@/components/RecentActivity'
+import CoachSection from '@/components/CoachSection'
+import { getSessions } from '@/lib/get-sessions'
 
 /* ─── helpers ─── */
 function parseDurString(s: string): number {
@@ -212,6 +215,7 @@ export default function CapturePage() {
   const [dragging, setDragging] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [sessions, setSessions] = useState<SplitSession[]>([])
+  const [historySessions, setHistorySessions] = useState<SplitSession[]>([])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
@@ -242,6 +246,12 @@ export default function CapturePage() {
       window.removeEventListener('drop', onDrop)
       window.removeEventListener('dragover', onOver)
     }
+  }, [])
+
+  useEffect(() => {
+    getSessions()
+      .then(rows => setHistorySessions(rows.map(storedToSplit)))
+      .catch(() => {}) // silent — sections just won't render
   }, [])
 
   const handleFile = useCallback(async (file: File) => {
@@ -293,6 +303,7 @@ export default function CapturePage() {
     saveSession(gymSession)
     const split = gymSessionToSplit('local-' + Date.now(), gymSession, new Date().toISOString())
     setSessions(prev => [split, ...prev])
+    setHistorySessions(prev => [split, ...prev])
     reset()
     window.location.href = '/history'
   }
@@ -379,6 +390,9 @@ export default function CapturePage() {
               ))}
             </div>
           </div>
+
+          <RecentActivity results={historySessions} />
+          <CoachSection results={historySessions} />
         </div>
       )}
 
